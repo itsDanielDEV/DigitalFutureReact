@@ -1,0 +1,32 @@
+.auth-panel {
+  max-width: 80vw;
+  height: auto;
+}
+
+.mobile-side {
+  min-width: 80vw;
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 0.5rem;
+}
+
+.left-side {
+  /* background-image: url(../assets/lock.jpg); */
+  padding: 0;
+}
+
+.lockIMG {
+  width: 100%;
+  border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.right-side {
+  padding: 2rem;
+  background-color: #fff;
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}

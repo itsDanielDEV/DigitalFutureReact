@@ -1,0 +1,21 @@
+#item-desc {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1;
+  line-clamp: 4;
+  text-align: start;
+}
+
+.card:hover {
+  transition: transform 100ms ease-in-out;
+  transform: scale(103%);
+  border: thin solid #0d6efd;
+}
+
+.card-img-top {
+  aspect-ratio: 3/2;
+  max-height: 300px;
+}

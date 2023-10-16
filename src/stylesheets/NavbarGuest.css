@@ -1,0 +1,44 @@
+.account:hover {
+  background-color: var(--bg-icon-hover);
+  color: #fff;
+}
+
+.account i {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: inherit !important;
+}
+
+.account svg {
+  margin-right: 0.5rem;
+}
+
+.cta,
+.categories-dkp {
+  padding: 0.2rem;
+  color: #fff;
+  background-color: #000;
+}
+
+.categories-dkp {
+  height: auto;
+}
+
+.inner-dkp a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.inner-dkp .dkp-names > *:hover {
+  background-color: var(--bg-icon-hover);
+}
+
+.text-responsive {
+  font-size: calc(0.8em + 0.5vw);
+}
+
+.rounded-end {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
