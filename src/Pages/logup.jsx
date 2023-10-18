@@ -1,5 +1,7 @@
+import AuthPanel from "../components/AuthPanel";
+
 function Logup() {
-  return <h1>Logup</h1>;
+  return <AuthPanel type="logup" />;
 }
 
 export default Logup;

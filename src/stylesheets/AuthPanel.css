@@ -1,22 +1,25 @@
 .auth-panel {
-  max-width: 80vw;
+  width: 90vw;
   height: auto;
 }
 
 .mobile-side {
-  min-width: 80vw;
   padding: 2rem;
   background-color: #fff;
   border-radius: 0.5rem;
 }
 
 .left-side {
+  aspect-ratio: 1/1;
+  width: 50%;
   /* background-image: url(../assets/lock.jpg); */
   padding: 0;
 }
 
 .lockIMG {
+  aspect-ratio: 1/1;
   width: 100%;
+  height: auto;
   border-top-left-radius: 0.5rem;
   border-bottom-left-radius: 0.5rem;
   background-position: center center;
@@ -25,8 +28,17 @@
 }
 
 .right-side {
-  padding: 2rem;
+  padding: 1rem;
   background-color: #fff;
   border-top-right-radius: 0.5rem;
   border-bottom-right-radius: 0.5rem;
+}
+
+.input-group {
+  justify-content: space-between !important;
+}
+
+.col-group {
+  padding: 0 !important;
+  max-width: 49% !important;
 }
