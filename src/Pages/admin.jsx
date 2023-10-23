@@ -1,5 +1,13 @@
 function Admin() {
-  return <h1>Admin</h1>;
+  return (
+    <a
+      id="btn-addCart"
+      class="text-center btn btn-outline-success mt-auto"
+      href="/home"
+    >
+      Add to cart
+    </a>
+  );
 }
 
 export default Admin;

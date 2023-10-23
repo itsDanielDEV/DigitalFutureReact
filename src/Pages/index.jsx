@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import NavbarGuest from "../components/NavbarGuest";
 import Carousel from "../components/Carousel";
 import Footer from "../components/Footer";
@@ -7,10 +6,10 @@ import ProductsSection from "../components/ProductsSection";
 function Index() {
   return (
     <div className="index-container">
-      <NavbarGuest />
+      <NavbarGuest homeMode={false} />
       <Carousel />
       <main>
-        <ProductsSection />
+        <ProductsSection homeMode={false} />
       </main>
       {/* <h1>Index</h1>
       <Link to="./home">Home</Link>

@@ -1,5 +1,6 @@
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
+import { CartProvider } from "./components/CartContext";
 import Index from "./Pages/index";
 import Home from "./Pages/home";
 import Login from "./Pages/login";
@@ -31,13 +32,19 @@ function App() {
   ];
 
   return (
-    <div className="Aplicacion">
-      <Routes>
-        {pages.map((page) => (
-          <Route key={page.path} path={page.path} element={<page.element />} />
-        ))}
-      </Routes>
-    </div>
+    <CartProvider>
+      <div className="Aplicacion">
+        <Routes>
+          {pages.map((page) => (
+            <Route
+              key={page.path}
+              path={page.path}
+              element={<page.element />}
+            />
+          ))}
+        </Routes>
+      </div>
+    </CartProvider>
   );
 }
 
