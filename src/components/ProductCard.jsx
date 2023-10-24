@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { CartContext } from "./CartContext";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 function ProductCard(props) {
   const cartContext = useContext(CartContext); // Obtén el contexto
@@ -13,6 +13,16 @@ function ProductCard(props) {
     itemPrices,
     setItemPrices,
   } = cartContext;
+
+  useEffect(() => {
+    setCartItems((prevItems) => {
+      return prevItems.map((item) =>
+        item.id === props.id
+          ? { ...item, quantity: itemQuantities[props.id] || 1 }
+          : item
+      );
+    });
+  }, [itemQuantities]);
 
   function handleAddToCart(e) {
     setCartItems((arr) => {
@@ -33,6 +43,7 @@ function ProductCard(props) {
           imgURL: props.imgURL,
           title: props.title,
           price: props.price,
+          quantity: itemQuantities[props.id] || 1,
         },
       ];
     });

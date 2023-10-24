@@ -55,7 +55,32 @@ function LoginForm(props) {
 
   function submitHandler(e) {
     e.preventDefault();
-    if (isEmailValid && isPassValid) navigate("/home");
+    if (isEmailValid && isPassValid) {
+      fetch("https://dummyjson.com/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+          // Usuario registrado:
+          // username: "hbingley1",
+          // password: "CQutx25i8r",
+
+          // expiresInMins: 60, // optional
+        }),
+      })
+        .then((res) => {
+          if (!res.ok) {
+            alert("User not found");
+          } else {
+            alert(`Welcome Back!`);
+            navigate("/home");
+          }
+          return res.json();
+        })
+        .then(console.log)
+        .catch((error) => console.error(error.message));
+    }
     const $form = e.target.closest("form"),
       $email = $form.querySelector("input[type='email']"),
       $pass = $form.querySelector("input[type='password']");

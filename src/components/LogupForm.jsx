@@ -21,6 +21,7 @@ function LogupForm(props) {
   const [isVerifyPassValid, setIsVerifyPassValid] = useState(null);
   const [isFirstNameValid, setIsFirstNameValid] = useState(null);
   const [isLastNameValid, setIsLastNameValid] = useState(null);
+  const [address, setAddress] = useState("");
 
   useEffect(() => {
     if (verifyPassword.length > 8)
@@ -30,7 +31,7 @@ function LogupForm(props) {
         setIsVerifyPassValid(false);
         verifyPasswordErrorMessage = "Passwords do not match";
       }
-    console.log("password: " + password + "\nverify: " + verifyPassword);
+    // console.log("password: " + password + "\nverify: " + verifyPassword);
   }, [password, verifyPassword]);
 
   function inputHandler(e, setValueInput, newRegExp) {
@@ -98,8 +99,33 @@ function LogupForm(props) {
       isEmailValid &&
       isPassValid &&
       isVerifyPassValid
-    )
-      navigate("/home");
+    ) {
+      //https://dummyjson.com/users/add
+      fetch("https://dummyjson.com/users/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+          firstName: firstName,
+          lastName: lastName,
+          address: address,
+          // expiresInMins: 60, // optional
+        }),
+      })
+        .then((res) => {
+          if (!res.ok) {
+            alert("Connection error");
+          } else {
+            alert(`Registered Successfully! Welcome ${firstName} ${lastName}`);
+            navigate("/home");
+          }
+          return res.json();
+        })
+        .then(console.log)
+        .catch((error) => console.error(error.message));
+    }
+
     const $form = e.target.closest("form"),
       $firstName = $form.querySelector("input[name='firstName']"),
       $lastName = $form.querySelector("input[name='lastName']"),
@@ -313,6 +339,7 @@ function LogupForm(props) {
             id="inputAddress"
             placeholder=""
             autoComplete="off"
+            onChange={(e) => setAddress(e.target.value)}
             required
           />
           <label htmlFor="inputAddress" className="form-label">

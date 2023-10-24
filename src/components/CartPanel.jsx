@@ -44,6 +44,7 @@ function CartPanel() {
   // Cuerpo del cart
   useEffect(() => {
     // console.log(cartItems);
+    // console.log(itemQuantities);
     setCartBody(
       cartItems.map((item) => (
         <article
