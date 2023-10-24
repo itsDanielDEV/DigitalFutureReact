@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function SalesDashboard() {
   const [products, setProducts] = useState([]);
@@ -13,7 +13,10 @@ function SalesDashboard() {
       // console.log(error);
     }
   };
-  fetchProducts();
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
   let totalPrice = 0,
     totalAmount = 0;
@@ -45,11 +48,11 @@ function SalesDashboard() {
           </thead>
           <tbody className="table-inventory-body">
             {products.map((product) => (
-              <tr>
-                <th>{product.title}</th>
-                <th>{product.rating.count}</th>
-                <th>{`$${product.price}`}</th>
-                <th>Acciones</th>
+              <tr key={product.id}>
+                <td>{product.title}</td>
+                <td>{product.rating.count}</td>
+                <td>{`$${product.price}`}</td>
+                <td>Acciones</td>
               </tr>
             ))}
           </tbody>
