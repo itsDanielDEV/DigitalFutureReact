@@ -2,6 +2,7 @@ import NavbarGuest from "../components/NavbarGuest";
 import Carousel from "../components/Carousel";
 import Footer from "../components/Footer";
 import ProductsSection from "../components/ProductsSection";
+import CartPanel from "../components/CartPanel";
 
 function Index() {
   return (
@@ -11,6 +12,7 @@ function Index() {
       <main>
         <ProductsSection homeMode={false} />
       </main>
+      <CartPanel />
       {/* <h1>Index</h1>
       <Link to="./home">Home</Link>
       <Link to="./login">Login</Link>

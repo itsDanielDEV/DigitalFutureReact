@@ -46,15 +46,30 @@ function CartPanel() {
     // console.log(cartItems);
     setCartBody(
       cartItems.map((item) => (
-        <article key={item.id} className="item-cart" data-id={item.id}>
+        <article
+          key={item.id}
+          className="item-cart mb-4 d-flex justify-content-between"
+          data-id={item.id}
+        >
           <img className="item-cart-img" src={item.imgURL} alt={item.title} />
           <section className="item-cart-info">
-            <p className="item-cart-title text-wrap text-break">{item.title}</p>
-            <p className="item-cart-price">
+            <p
+              className="item-cart-title "
+              style={{
+                display: "-webkit-box",
+                WebkitLineClamp: 3,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {item.title}
+            </p>
+            <p className="item-cart-price" style={{ color: "blue" }}>
               ${itemPrices[item.id] * itemQuantities[item.id]}
             </p>
           </section>
-          <section className="item-cart-actions" style={{ width: "250px" }}>
+          <section className="item-cart-actions d-flex justify-content-center">
             <button
               className="btn btn-danger"
               onClick={() => handleDecrement(item.id)}
