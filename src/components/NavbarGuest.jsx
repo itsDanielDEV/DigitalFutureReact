@@ -4,35 +4,74 @@ import { Link } from "react-router-dom";
 import { ReactComponent as PersonCircleIcon } from "../assets/PersonCircleIcon.svg";
 import { ReactComponent as CartIcon } from "../assets/CartIcon.svg";
 import { ReactComponent as HamburguerIcon } from "../assets/HamburguerBarIcon.svg";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 
 function NavbarGuest(props) {
-  const accountOptions = props.homeMode
-    ? ["Profile", "Admin", "Settings", "Log out"]
-    : ["Log in", "Log up"];
+  const accountOptions =
+    props.homeMode || props.adminMode
+      ? ["Profile", "Admin", "Settings", "Log out"]
+      : ["Log in", "Log up"];
+
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    const d = document;
-    d.addEventListener("click", (e) => {
-      if (e.target.matches(".categories-item")) {
-        const $canvasBody = d.querySelector(".ctm-offcanvas-dkp");
-        const $canvasBackdrop = d.querySelector(".offcanvas-backdrop");
-        d.body.removeAttribute("style");
-        $canvasBody.classList.remove("show");
-        $canvasBackdrop.remove();
+    const $offcanvasElement = document.getElementById("offcanvasExample");
+
+    const categoriesItems =
+      $offcanvasElement.querySelectorAll(".categories-item");
+
+    const closeOffcanvas = () => {
+      $offcanvasElement.classList.remove("show");
+    };
+
+    const handleClick = (event) => {
+      const { target } = event;
+      if (target.matches(".categories-item")) {
+        const $offcanvasBackdrop = document.querySelector(
+          ".offcanvas-backdrop"
+        );
+        closeOffcanvas();
+        $offcanvasBackdrop.classList.add("d-none");
+        document.body.removeAttribute("style");
+      } else if (target.matches(".offcanvas-backdrop")) {
+        event.preventDefault();
       }
-    });
-  });
+    };
+
+    document.addEventListener("click", handleClick);
+
+    if (!props.adminMode) {
+      const fetchData = async () => {
+        try {
+          const response = await fetch(
+            "https://fakestoreapi.com/products/categories"
+          );
+          const data = await response.json();
+          setCategories(data);
+        } catch (error) {
+          // Manejar errores aquí
+          // console.error("Error fetching data:", error);
+        }
+      };
+      fetchData();
+    } else {
+      setCategories(["Inventory", "My Orders", "Record Sales"]);
+    }
+
+    return () => {
+      document.removeEventListener("click", handleClick);
+    };
+  }, []);
 
   return (
-    <header>
+    <header className="w-100">
       <nav className="navbar navbar-expand-lg bg-body-tertiary sticky-top">
         <div className="container-fluid">
           {/* Hamburguer and logo */}
           <div className="navbar-brand d-flex justify-content-center align-items-center">
             <button
               className={`navbar-toggler me-3 ${
-                props.homeMode ? "" : "d-none"
+                props.homeMode || props.adminMode ? "" : "d-none"
               }`}
               type="button"
               data-bs-toggle="offcanvas"
@@ -194,7 +233,11 @@ function NavbarGuest(props) {
         </form>
       </nav>
 
-      <div className={`container-fluid cta ${props.homeMode ? "d-none" : ""}`}>
+      <div
+        className={`container-fluid cta ${
+          props.homeMode || props.adminMode ? "d-none" : ""
+        }`}
+      >
         <h5 className="m-0 text-center text-responsive">
           Tech Dreams Await 🚀{" "}
           <Link
@@ -209,46 +252,41 @@ function NavbarGuest(props) {
       <article
         id="parent-canvas-dkp"
         className={`container-fluid categories-dkp  ${
-          props.homeMode ? "d-lg-block" : "d-none"
+          props.homeMode || props.adminMode ? "d-lg-block" : "d-none"
         }`}
       >
         <section
           className={`inner-dkp d-flex justify-content-between align-items-strech d-none d-lg-flex`}
         >
-          <button
-            id="button-control-canva"
-            className="btn btn-primary"
-            type="button"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#offcanvasExample"
-            aria-controls="offcanvasExample"
-          >
-            <HamburguerIcon />
-            All
-          </button>
+          {props.adminMode ? null : (
+            <button
+              id="button-control-canva"
+              className="btn btn-primary"
+              type="button"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasExample"
+              aria-controls="offcanvasExample"
+            >
+              <HamburguerIcon />
+              All
+            </button>
+          )}
           <div className="dkp-names d-flex justify-content-between align-items-center mx-auto">
-            <a href="#bestsellers" className="p-2 px-3">
-              Bestsellers
-            </a>
-            <a href="#trendingproducts" className="p-2 px-3">
-              Trending Products
-            </a>
-            <a href="#smartphones" className="p-2 px-3">
-              Smartphones
-            </a>
-            <a href="#computers" className="p-2 px-3">
-              Computers
-            </a>
-            <a href="#laptops" className="p-2 px-3">
-              Laptops
-            </a>
-
-            <a href="#gaming" className="p-2 px-3">
-              Gaming
-            </a>
-            <a href="#software" className="p-2 px-3">
-              Software
-            </a>
+            {/* {props.adminMode ? null : (
+              <>
+                <a href="#bestsellers" className="p-2 px-3">
+                  Bestsellers
+                </a>
+                <a href="#trendingproducts" className="p-2 px-3">
+                  Trending Products
+                </a>
+              </>
+            )} */}
+            {categories.map((category) => (
+              <a key={category} className="p-2 px-3" href={`#${category}`}>
+                {category}
+              </a>
+            ))}
           </div>
         </section>
 
@@ -266,7 +304,9 @@ function NavbarGuest(props) {
               aria-label="Close"
             ></button>
           </div>
+
           {/* Lateral bar desktop */}
+
           <div className="offcanvas-body pt-1">
             <div className="categories d-flex flex-column">
               <p className="categories-title">Featured Products</p>
@@ -282,41 +322,29 @@ function NavbarGuest(props) {
               </a>
             </div>
             <div className="categories d-flex flex-column">
-              <p className="categories-title">Electronics</p>
-              <a className="categories-item" href="#smartphones">
-                Smartphones
-              </a>
-              <a className="categories-item" href="#computers">
-                Computers
-              </a>
-              <a className="categories-item" href="#laptops">
-                Laptops
-              </a>
-              <a className="categories-item" href="#accesories">
-                Accessories
-              </a>
-              <a className="categories-item" href="#gaming">
-                Gaming
-              </a>
-              <a className="categories-item" href="#software">
-                Software
-              </a>
-              <a className="categories-item" href="#audioandsound">
-                Audio and Sound
-              </a>
+              <p className="categories-title">Categories</p>
+              {categories.map((category) => (
+                <a
+                  key={category}
+                  className="categories-item"
+                  href={`#${category}`}
+                >
+                  {category}
+                </a>
+              ))}
             </div>
             <div className="categories d-flex flex-column">
               <p className="categories-title">Help and Configuration</p>
               <a className="categories-item" href="#">
                 Profile
               </a>
-              <a className="categories-item" href="./admin.html">
+              <a className="categories-item" href="/admin">
                 Admin
               </a>
               <a className="categories-item" href="#">
                 Settings
               </a>
-              <a className="categories-item" href="./index.html">
+              <a className="categories-item" href="/">
                 Log Out
               </a>
             </div>

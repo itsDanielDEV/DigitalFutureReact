@@ -3,30 +3,59 @@ import { CartContext } from "./CartContext";
 import { useContext } from "react";
 
 function ProductCard(props) {
-  const { cartItems, setCartItems } = useContext(CartContext);
+  const cartContext = useContext(CartContext); // Obtén el contexto
+
+  const {
+    cartItems,
+    setCartItems,
+    itemQuantities,
+    setItemQuantities,
+    itemPrices,
+    setItemPrices,
+  } = cartContext;
 
   function handleAddToCart(e) {
-    setCartItems((arr) => [
-      ...arr,
-      {
-        id: props.id,
-        imgURL: props.imgURL,
-        name: props.name,
-        price: props.price,
-      },
-    ]);
+    setCartItems((arr) => {
+      // Verificar si el id ya existe en cartItems
+      const idExists = arr.some((item) => item.id === props.id);
+
+      // Si el id ya existe, mostrar una alerta y devolver el array original
+      if (idExists) {
+        alert("Item is already in the cart");
+        return arr;
+      }
+
+      // Si el id no existe, agregar el nuevo elemento al array
+      return [
+        ...arr,
+        {
+          id: props.id,
+          imgURL: props.imgURL,
+          title: props.title,
+          price: props.price,
+        },
+      ];
+    });
+
+    setItemPrices((old) => {
+      return { ...old, [props.id]: props.price };
+    });
+
+    setItemQuantities((old) => {
+      return { ...old, [props.id]: 1 };
+    });
   }
   return (
     <div className="col mb-5 " data-id={props.id}>
       <div className="card h-100">
         {/* Product image */}
-        <img className="card-img-top" src={props.imgURL} alt={props.name} />
+        <img className="card-img-top" src={props.imgURL} alt={props.title} />
         {/* Product details */}
         <div className="card-body p-4">
           <div className="text-center">
             {/* Product name */}
             <h5 id="item-name" className="fw-bolder">
-              {props.name}
+              {props.title}
             </h5>
             <p id="item-desc">{props.description}</p>
 

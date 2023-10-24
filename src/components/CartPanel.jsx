@@ -2,70 +2,69 @@ import React, { useContext, useEffect, useState } from "react";
 import { CartContext } from "./CartContext";
 
 function CartPanel() {
-  const { cartItems } = useContext(CartContext);
-  const [itemQuantities, setItemQuantities] = useState({});
-  const [itemPrices, setItemPrices] = useState({});
-  const [subtotal, setSubtotal] = useState(0);
+  const {
+    cartItems,
+    setCartItems,
+    itemQuantities,
+    itemPrices,
+    setItemQuantities,
+    setItemPrices,
+    subtotal,
+    setSubtotal,
+  } = useContext(CartContext);
   const [CartBody, setCartBody] = useState(null);
 
-  const updatePricesAndSubtotal = () => {
-    const updatedPrices = {};
-    let sum = 0;
-    cartItems.forEach((item) => {
-      const price = item.price * (itemQuantities[item.id] || 1);
-      updatedPrices[item.id] = price;
-      sum += price;
+  const handleDecrement = (id) => {
+    setItemQuantities((old) => {
+      const updatedQuantities = { ...old, [id]: old[id] - 1 };
+      if (updatedQuantities[id] === 0) {
+        const updatedCartItems = cartItems.filter((item) => item.id !== id);
+        setCartItems(updatedCartItems);
+      }
+      return updatedQuantities;
     });
-    setItemPrices(updatedPrices);
-    setSubtotal(sum);
   };
 
-  const handleDecrement = (itemId) => {
-    const newQuantity = (itemQuantities[itemId] || 1) - 1;
-    if (newQuantity > 0) {
-      setItemQuantities((prev) => ({
-        ...prev,
-        [itemId]: newQuantity,
-      }));
-    } else {
-      const { [itemId]: deletedItem, ...updatedQuantities } = itemQuantities;
-      setItemQuantities(updatedQuantities);
+  const handleIncrement = (id) => {
+    setItemQuantities((old) => {
+      return { ...old, [id]: old[id] + 1 };
+    });
+  };
+
+  useEffect(() => {
+    let sum = 0;
+    for (const itemId in itemPrices) {
+      if (itemQuantities[itemId]) {
+        sum += itemPrices[itemId] * itemQuantities[itemId];
+      }
     }
-  };
+    setSubtotal(sum);
+  }, [itemPrices, itemQuantities]);
 
-  const handleIncrement = (itemId) => {
-    setItemQuantities((prev) => ({
-      ...prev,
-      [itemId]: (prev[itemId] || 1) + 1,
-    }));
-  };
-
+  // Cuerpo del cart
   useEffect(() => {
-    updatePricesAndSubtotal();
-  }, [itemQuantities, cartItems]);
-
-  useEffect(() => {
+    // console.log(cartItems);
     setCartBody(
       cartItems.map((item) => (
         <article key={item.id} className="item-cart" data-id={item.id}>
-          <img className="item-cart-img" src={item.imgURL} alt={item.name} />
+          <img className="item-cart-img" src={item.imgURL} alt={item.title} />
           <section className="item-cart-info">
-            <p className="item-cart-title">{item.name}</p>
+            <p className="item-cart-title text-wrap text-break">{item.title}</p>
             <p className="item-cart-price">
-              ${itemPrices[item.id] || item.price}
+              ${itemPrices[item.id] * itemQuantities[item.id]}
             </p>
           </section>
-          <section className="item-cart-actions">
+          <section className="item-cart-actions" style={{ width: "250px" }}>
             <button
               className="btn btn-danger"
               onClick={() => handleDecrement(item.id)}
             >
               -
             </button>
-            <span className="m-2">{itemQuantities[item.id] || 1}</span>
+            <span className="m-2">{itemQuantities[item.id]}</span>
             <button
-              onClick={() => handleIncrement(item.id)}
               className="btn btn-success"
+              onClick={() => handleIncrement(item.id)}
             >
               +
             </button>
@@ -73,7 +72,7 @@ function CartPanel() {
         </article>
       ))
     );
-  }, [cartItems, itemQuantities, itemPrices]);
+  }, [cartItems, itemQuantities]);
 
   return (
     <section

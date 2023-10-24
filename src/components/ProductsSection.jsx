@@ -1,9 +1,39 @@
-import categories from "../data/categories.js";
-import products from "../data/products.js";
+// import categories from "../data/categories.js";
+// import products from "../data/products.js";
 import ProductCard from "./ProductCard.jsx";
 import "../stylesheets/ProductsSection.css";
+import { useState } from "react";
 
 function IndexProductsSection(props) {
+  const [categories, setCategories] = useState([]);
+  const fetchData = async () => {
+    try {
+      const response = await fetch(
+        "https://fakestoreapi.com/products/categories"
+      );
+      const data = await response.json();
+      setCategories(data);
+    } catch (error) {
+      // Manejar errores aquí
+      // console.error("Error fetching data:", error);
+    }
+  };
+
+  const [products, setProducts] = useState([]);
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch("https://fakestoreapi.com/products");
+      const data = await response.json();
+      setProducts(data);
+    } catch (error) {
+      // Manejar errores aquí
+      // console.error("Error fetching data:", error);
+    }
+  };
+
+  fetchData();
+  fetchProducts();
+
   return (
     <div id="shop-cards" className="container px-4 px-lg-5 mt-5">
       {products.length > 0 ? (
@@ -20,8 +50,8 @@ function IndexProductsSection(props) {
                       <ProductCard
                         key={product.id}
                         id={product.id}
-                        imgURL={product.imgURL}
-                        name={product.name}
+                        imgURL={product.image}
+                        title={product.title}
                         description={product.description}
                         price={product.price}
                         homeMode={props.homeMode}
@@ -39,8 +69,8 @@ function IndexProductsSection(props) {
                   <ProductCard
                     key={product.id}
                     id={product.id}
-                    imgURL={product.imgURL}
-                    name={product.name}
+                    imgURL={product.image}
+                    title={product.title}
                     description={product.description}
                     price={product.price}
                     homeMode={props.homeMode}
