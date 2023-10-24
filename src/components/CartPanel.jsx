@@ -74,6 +74,31 @@ function CartPanel() {
     );
   }, [cartItems, itemQuantities]);
 
+  const handleCompra = () => {
+    // Obtener la información necesaria del carrito
+    const data = {
+      cartItems: cartItems,
+      subtotal: subtotal,
+    };
+
+    // Realizar la petición fetch
+    fetch("URL_DEL_API", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        alert("Purchase successfully completed.", data);
+      })
+      .catch((error) => {
+        // Manejar errores de la petición fetch
+        console.error("Error occurred during purchase:", error);
+      });
+  };
+
   return (
     <section
       className="offcanvas offcanvas-end"
@@ -97,7 +122,10 @@ function CartPanel() {
         <div id="subtotal">
           Subtotal: $<span id="subtotal-price">{subtotal}</span>
         </div>
-        <button className="btn btn-outline-primary btn-checkout">
+        <button
+          className="btn btn-outline-primary btn-checkout"
+          onClick={handleCompra}
+        >
           Checkout
         </button>
       </div>

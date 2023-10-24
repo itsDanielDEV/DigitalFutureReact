@@ -2,7 +2,7 @@
 // import products from "../data/products.js";
 import ProductCard from "./ProductCard.jsx";
 import "../stylesheets/ProductsSection.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function IndexProductsSection(props) {
   const [categories, setCategories] = useState([]);
@@ -31,8 +31,10 @@ function IndexProductsSection(props) {
     }
   };
 
-  fetchData();
-  fetchProducts();
+  useEffect(() => {
+    fetchData();
+    fetchProducts();
+  }, []);
 
   return (
     <div id="shop-cards" className="container px-4 px-lg-5 mt-5">
