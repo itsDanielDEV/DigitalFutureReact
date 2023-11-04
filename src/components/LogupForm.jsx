@@ -101,7 +101,7 @@ function LogupForm(props) {
       isVerifyPassValid
     ) {
       //https://dummyjson.com/users/add
-      fetch("https://dummyjson.com/users/add", {
+      fetch("http://localhost:3001/logup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -118,7 +118,7 @@ function LogupForm(props) {
             alert("Connection error");
           } else {
             alert(`Registered Successfully! Welcome ${firstName} ${lastName}`);
-            navigate("/home");
+            navigate("/login");
           }
           return res.json();
         })

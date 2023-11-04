@@ -6,34 +6,39 @@ import { useState, useEffect } from "react";
 
 function IndexProductsSection(props) {
   const [categories, setCategories] = useState([]);
-  const fetchData = async () => {
-    try {
-      const response = await fetch(
-        "https://fakestoreapi.com/products/categories"
-      );
-      const data = await response.json();
-      setCategories(data);
-    } catch (error) {
-      // Manejar errores aquí
-      // console.error("Error fetching data:", error);
-    }
-  };
-
   const [products, setProducts] = useState([]);
-  const fetchProducts = async () => {
-    try {
-      const response = await fetch("https://fakestoreapi.com/products");
-      const data = await response.json();
-      setProducts(data);
-    } catch (error) {
-      // Manejar errores aquí
-      // console.error("Error fetching data:", error);
-    }
+
+  const fetchData = () => {
+    const token = localStorage.getItem("token");
+    fetch("http://localhost:3001/producto/categorias", {
+      headers: { authorization: token },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Invalid Token!");
+        return res;
+      })
+      .then((data) => data.json())
+      .then((response) => response.map((item) => item.category))
+      .then((dataArray) => setCategories(dataArray))
+      .catch((error) => {
+        console.error(error);
+      });
+
+    fetch("http://localhost:3001/producto", {
+      headers: { "Content-Type": "application/json", authorization: token },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Invalid Token!");
+        return res.json();
+      })
+      .then((data) => setProducts(data))
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   useEffect(() => {
     fetchData();
-    fetchProducts();
   }, []);
 
   return (
