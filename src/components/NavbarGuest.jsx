@@ -81,9 +81,9 @@ function NavbarGuest(props) {
             >
               <span className="navbar-toggler-icon"></span>
             </button>
-            <a
+            <Link
               className="navbar-brand d-flex justify-content-center align-items-center"
-              href="/"
+              to={props.adminMode || props.homeMode ? "/home" : "/"}
             >
               <img
                 className="me-1 d-inline-block align-text-top"
@@ -93,7 +93,7 @@ function NavbarGuest(props) {
                 height="30"
               />
               <span className="d-none d-sm-inline">DigitalFuture</span>
-            </a>
+            </Link>
           </div>
 
           {/* Mobile Dropdown header */}

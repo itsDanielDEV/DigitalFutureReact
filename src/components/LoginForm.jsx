@@ -69,6 +69,7 @@ function LoginForm(props) {
         .then((res) => {
           if (!res.ok) {
             alert("Invalid email or password.");
+            throw new Error("Invalid email or password.");
           }
           return res.json();
         })

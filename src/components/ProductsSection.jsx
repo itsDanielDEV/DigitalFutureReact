@@ -18,20 +18,28 @@ function IndexProductsSection(props) {
         return res;
       })
       .then((data) => data.json())
-      .then((response) => response.map((item) => item.category))
+      .then((response) => response["categories"].map((item) => item.category))
       .then((dataArray) => setCategories(dataArray))
       .catch((error) => {
         console.error(error);
       });
 
-    fetch("http://localhost:3001/producto", {
-      headers: { "Content-Type": "application/json", authorization: token },
+    let options = {
+      "Content-Type": "application/json",
+      authorization: token,
+    };
+    let api =
+      window.location.pathname === "/"
+        ? "http://localhost:3001/producto/invitado"
+        : "http://localhost:3001/producto";
+    fetch(api, {
+      headers: options,
     })
       .then((res) => {
         if (!res.ok) throw new Error("Invalid Token!");
         return res.json();
       })
-      .then((data) => setProducts(data))
+      .then((data) => setProducts(data["products"]))
       .catch((error) => {
         console.error(error);
       });

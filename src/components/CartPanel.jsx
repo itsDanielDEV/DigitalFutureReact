@@ -90,28 +90,39 @@ function CartPanel() {
     );
   }, [cartItems, itemQuantities]);
 
-  const handleCompra = () => {
+  const handleCompra = async () => {
     // Obtener la información necesaria del carrito
+
     const data = {
-      cartItems: cartItems,
-      subtotal: subtotal,
+      purchase: cartItems,
+      subtotal,
     };
 
     // Realizar la petición fetch
-    fetch("URL_DEL_API", {
+    let token = localStorage.getItem("token");
+    await fetch("http://localhost:3001/producto/compra", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        authorization: token,
       },
       body: JSON.stringify(data),
     })
-      .then((response) => response.json())
-      .then((data) => {
-        alert("Purchase successfully completed.", data);
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(
+            "Internal server error while processing the purchase."
+          );
+        }
+        return res.json();
+      })
+      .then((response) => {
+        alert("Purchase successfully completed.");
       })
       .catch((error) => {
-        // Manejar errores de la petición fetch
+        // Handle fetch request errors
         console.error("Error occurred during purchase:", error);
+        alert("An error occurred during the purchase. Please try again later.");
       });
   };
 
@@ -139,6 +150,7 @@ function CartPanel() {
           Subtotal: $<span id="subtotal-price">{subtotal}</span>
         </div>
         <button
+          type="button"
           className="btn btn-outline-primary btn-checkout"
           onClick={handleCompra}
         >
