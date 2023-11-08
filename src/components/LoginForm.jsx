@@ -53,10 +53,10 @@ function LoginForm(props) {
     }
   }
 
-  function submitHandler(e) {
+  async function submitHandler(e) {
     e.preventDefault();
     if (isEmailValid && isPassValid) {
-      fetch("http://localhost:3001/login", {
+      await fetch("http://localhost:3001/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

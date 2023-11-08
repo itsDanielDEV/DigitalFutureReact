@@ -18,9 +18,10 @@ function IndexProductsSection(props) {
     }
   }, []);
 
-  const fetchData = () => {
+  const fetchData = async () => {
     const token = localStorage.getItem("token");
-    fetch("http://localhost:3001/producto/categorias", {
+
+    await fetch("http://localhost:3001/producto/categorias", {
       headers: { authorization: token },
     })
       .then((res) => {
@@ -42,7 +43,7 @@ function IndexProductsSection(props) {
       window.location.pathname === "/"
         ? "http://localhost:3001/producto/invitado"
         : "http://localhost:3001/producto";
-    fetch(api, {
+    await fetch(api, {
       headers: options,
     })
       .then((res) => {

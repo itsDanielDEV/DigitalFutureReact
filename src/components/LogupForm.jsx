@@ -91,7 +91,7 @@ function LogupForm(props) {
     }
   }
 
-  function submitHandler(e) {
+  async function submitHandler(e) {
     e.preventDefault();
     if (
       isFirstNameValid &&
@@ -101,7 +101,7 @@ function LogupForm(props) {
       isVerifyPassValid
     ) {
       //https://dummyjson.com/users/add
-      fetch("http://localhost:3001/logup", {
+      await fetch("http://localhost:3001/logup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

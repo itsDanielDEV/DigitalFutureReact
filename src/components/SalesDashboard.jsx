@@ -4,20 +4,20 @@ function SalesDashboard() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
 
-  const fetchData = () => {
+  const fetchData = async () => {
     const token = localStorage.getItem("token");
     const options = {
       "Content-Type": "application/json",
       authorization: token,
     };
 
-    fetch("http://localhost:3001/producto", {
+    await fetch("http://localhost:3001/producto", {
       headers: options,
     })
       .then((res) => res.json())
       .then((json) => setProducts(json["products"]));
 
-    fetch("http://localhost:3001/producto/categorias", {
+    await fetch("http://localhost:3001/producto/categorias", {
       headers: options,
     })
       .then((res) => res.json())
