@@ -1,9 +1,9 @@
-import { stripBasename } from "@remix-run/router";
 import { useEffect, useState } from "react";
 
 function SalesDashboard() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
+
   const fetchData = () => {
     const token = localStorage.getItem("token");
     const options = {
@@ -112,7 +112,7 @@ function SalesDashboard() {
           price: Number(price),
           description,
           category,
-          imgURL,
+          image: imgURL,
           quantity: Number(quantity),
         },
       }),
@@ -158,13 +158,13 @@ function SalesDashboard() {
       headers: { "Content-Type": "application/json", authorization: token },
       body: JSON.stringify({
         product: {
-          id,
+          id: Number(id),
           title,
-          price,
+          price: Number(price),
           description,
           category,
-          imgURL,
-          quantity,
+          image: imgURL,
+          quantity: Number(quantity),
         },
       }),
     })

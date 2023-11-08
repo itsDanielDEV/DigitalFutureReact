@@ -3,10 +3,20 @@
 import ProductCard from "./ProductCard.jsx";
 import "../stylesheets/ProductsSection.css";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function IndexProductsSection(props) {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
+
+  const navigate = useNavigate();
+  let token = localStorage.getItem("token");
+
+  useEffect(() => {
+    if (!props.homeMode && token) {
+      navigate("/home");
+    }
+  }, []);
 
   const fetchData = () => {
     const token = localStorage.getItem("token");

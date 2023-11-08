@@ -14,16 +14,6 @@ function ProductCard(props) {
     setItemPrices,
   } = cartContext;
 
-  useEffect(() => {
-    setCartItems((prevItems) => {
-      return prevItems.map((item) =>
-        item.id === props.id
-          ? { ...item, quantity: itemQuantities[props.id] || 1 }
-          : item
-      );
-    });
-  }, [itemQuantities]);
-
   function handleAddToCart(e) {
     setCartItems((arr) => {
       // Verificar si el id ya existe en cartItems

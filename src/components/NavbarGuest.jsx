@@ -9,7 +9,7 @@ import { useState, useEffect } from "react";
 function NavbarGuest(props) {
   const accountOptions =
     props.homeMode || props.adminMode
-      ? ["Profile", "Admin", "Settings", "Log out"]
+      ? ["Profile", "Admin", "Settings"]
       : ["Log in", "Log up"];
 
   const [categories, setCategories] = useState([]);
@@ -118,6 +118,19 @@ function NavbarGuest(props) {
                   </Link>
                 </li>
               ))}
+              {props.homeMode ? (
+                <li>
+                  <Link
+                    to="/"
+                    className="dropdown-item"
+                    onClick={(e) => {
+                      localStorage.removeItem("token");
+                    }}
+                  >
+                    Log out
+                  </Link>
+                </li>
+              ) : null}
             </ul>
 
             <button
@@ -185,6 +198,19 @@ function NavbarGuest(props) {
                         </Link>
                       </li>
                     ))}
+                    {props.homeMode ? (
+                      <li>
+                        <Link
+                          to="/"
+                          className="dropdown-item"
+                          onClick={(e) => {
+                            localStorage.removeItem("token");
+                          }}
+                        >
+                          Log out
+                        </Link>
+                      </li>
+                    ) : null}
                   </ul>
 
                   <button

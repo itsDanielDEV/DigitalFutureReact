@@ -19,6 +19,7 @@ function CartPanel() {
       const updatedQuantities = { ...old, [id]: old[id] - 1 };
       if (updatedQuantities[id] === 0) {
         const updatedCartItems = cartItems.filter((item) => item.id !== id);
+        // console.log("updatedCartItems: ", updatedCartItems);
         setCartItems(updatedCartItems);
       }
       return updatedQuantities;
@@ -39,7 +40,9 @@ function CartPanel() {
       }
     }
     setSubtotal(sum);
-  }, [itemPrices, itemQuantities]);
+    // console.log("cartItems:", cartItems); // imprimir cart items
+    // console.log("itemquantities:", itemQuantities); // imprimir cart items
+  }, [itemPrices, itemQuantities, cartItems]);
 
   // Cuerpo del cart
   useEffect(() => {
@@ -108,23 +111,45 @@ function CartPanel() {
       },
       body: JSON.stringify(data),
     })
-      .then((res) => {
+      .then(async (res) => {
         if (!res.ok) {
-          throw new Error(
-            "Internal server error while processing the purchase."
-          );
+          res = await res.json();
+          throw new Error(res.error);
         }
         return res.json();
       })
       .then((response) => {
         alert("Purchase successfully completed.");
       })
+      .then(() => {
+        // setCartBody("");
+        // const updatedCartItems = cartItems.filter((item) => item.id !== id);
+        setCartItems(0);
+        setCartItems([]);
+        setItemPrices({});
+        setItemQuantities({});
+
+        // console.log(itemQuantities);
+
+        // setSubtotal(0);
+        // setCartItems(updatedCartItems);
+      })
       .catch((error) => {
         // Handle fetch request errors
-        console.error("Error occurred during purchase:", error);
-        alert("An error occurred during the purchase. Please try again later.");
+        // console.error("Error occurred during purchase:", error);
+        // console.log("error", error);
+        alert(error.message);
       });
   };
+
+  useEffect(() => {
+    const updatedCartItems = cartItems.map((item) =>
+      itemQuantities[item.id]
+        ? { ...item, quantity: itemQuantities[item.id] }
+        : { ...item, quantity: 1 }
+    );
+    setCartItems(updatedCartItems);
+  }, [itemQuantities]);
 
   return (
     <section

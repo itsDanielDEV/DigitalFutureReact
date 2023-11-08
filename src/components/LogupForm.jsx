@@ -116,13 +116,15 @@ function LogupForm(props) {
         .then((res) => {
           if (!res.ok) {
             alert("Connection error");
-          } else {
-            alert(`Registered Successfully! Welcome ${firstName} ${lastName}`);
-            navigate("/login");
+            throw new Error("Connection error");
           }
           return res.json();
         })
-        .then(console.log)
+        .then((response) => {
+          alert(`Registered Successfully! Welcome ${firstName} ${lastName}`);
+          navigate("/login");
+          return response;
+        })
         .catch((error) => console.error(error.message));
     }
 
